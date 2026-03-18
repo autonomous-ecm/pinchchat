@@ -223,6 +223,7 @@ function NewSessionSplitButton({ onNewSession, onNewSessionForAgent, sessions }:
               key={id}
               onClick={() => { void onNewSessionForAgent(id); setOpen(false); }}
               className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-pc-text-secondary hover:bg-[var(--pc-hover)] hover:text-pc-text transition-colors"
+              aria-label={`${t('sidebar.newSession')} ${id}`}
             >
               <Bot size={12} className="shrink-0 text-pc-accent-light/70" />
               <span className="font-mono truncate">{id}</span>
@@ -516,6 +517,8 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                       ? 'bg-[var(--pc-accent-glow)] text-pc-accent-light border-[var(--pc-accent-dim)]'
                       : 'bg-transparent text-pc-text-muted border-pc-border hover:bg-[var(--pc-hover)] hover:text-pc-text-secondary'
                   }`}
+                  aria-label={t('sidebar.filterAll')}
+                  aria-pressed={!channelFilter}
                 >
                   {t('sidebar.filterAll')}
                 </button>
@@ -526,6 +529,8 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                       ? 'bg-violet-500/15 text-violet-300 border-violet-500/30'
                       : 'bg-transparent text-pc-text-muted border-pc-border hover:bg-[var(--pc-hover)] hover:text-pc-text-secondary'
                   }`}
+                  aria-label={t('sidebar.filterActive')}
+                  aria-pressed={channelFilter === 'active'}
                 >
                   <Zap size={10} />
                   {t('sidebar.filterActive')}
@@ -539,6 +544,8 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                         ? 'bg-[var(--pc-accent-glow)] text-pc-accent-light border-[var(--pc-accent-dim)]'
                         : 'bg-transparent text-pc-text-muted border-pc-border hover:bg-[var(--pc-hover)] hover:text-pc-text-secondary'
                     }`}
+                    aria-label={categoryLabel(cat)}
+                    aria-pressed={channelFilter === cat}
                   >
                     <FilterChipIcon cat={cat} size={10} />
                     {categoryLabel(cat)}
@@ -560,6 +567,8 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                       ? 'bg-[var(--pc-accent-glow)] text-pc-accent-light border-[var(--pc-accent-dim)]'
                       : 'bg-transparent text-pc-text-muted border-pc-border hover:bg-[var(--pc-hover)] hover:text-pc-text-secondary'
                   }`}
+                  aria-label={t('sidebar.filterAllAgents')}
+                  aria-pressed={!agentFilter}
                 >
                   {t('sidebar.filterAllAgents')}
                 </button>
@@ -572,6 +581,8 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                         ? 'bg-[var(--pc-accent-glow)] text-pc-accent-light border-[var(--pc-accent-dim)]'
                         : 'bg-transparent text-pc-text-muted border-pc-border hover:bg-[var(--pc-hover)] hover:text-pc-text-secondary'
                     }`}
+                    aria-label={`Filter agent: ${id}`}
+                    aria-pressed={agentFilter === id}
                   >
                     <Bot size={10} className="shrink-0" />
                     <span className="font-mono">{id}</span>
@@ -624,6 +635,7 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
                 <button
                   onClick={() => { void onNewSession(); }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--pc-accent)] text-white text-xs font-medium hover:opacity-90 transition-opacity shadow-[0_4px_12px_rgba(var(--pc-accent-rgb),0.2)]"
+                  aria-label={t('sidebar.newSession')}
                 >
                   <Plus size={14} />
                   {t('sidebar.newSession')}
@@ -835,12 +847,14 @@ export function Sidebar({ sessions, activeSession, onSwitch, onDelete, onSplit, 
               <button
                 onClick={() => setConfirmDelete(null)}
                 className="px-3 py-1.5 text-xs rounded-xl border border-pc-border-strong text-pc-text-secondary hover:bg-[var(--pc-hover)] transition-colors"
+                aria-label={t('sidebar.deleteCancel')}
               >
                 {t('sidebar.deleteCancel')}
               </button>
               <button
                 onClick={() => { onDelete(confirmDelete); setConfirmDelete(null); }}
                 className="px-3 py-1.5 text-xs rounded-xl bg-red-500/20 text-red-300 border border-red-500/20 hover:bg-red-500/30 transition-colors"
+                aria-label={t('sidebar.delete')}
               >
                 {t('sidebar.delete')}
               </button>
