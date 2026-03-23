@@ -3,13 +3,12 @@ import { ChatMessageComponent } from './ChatMessage';
 import { ChatInput, type ComposerInsertRequest } from './ChatInput';
 import { TypingIndicator } from './TypingIndicator';
 import type { ChatMessage, ConnectionStatus } from '../types';
-import { Bot, ArrowDown, Loader2, ChevronsDownUp, ChevronsUpDown, Sparkles, Bookmark, Download } from 'lucide-react';
+import { Bot, ArrowDown, Loader2, ChevronsDownUp, ChevronsUpDown, Sparkles, Bookmark } from 'lucide-react';
 import { MessageSearch } from './MessageSearch';
 import { useT } from '../hooks/useLocale';
 import { getLocale, type TranslationKey } from '../lib/i18n';
 import { useToolCollapse } from '../hooks/useToolCollapse';
 import { useBookmarks } from '../hooks/useBookmarks';
-import { messagesToMarkdown, downloadFile } from '../lib/exportChat';
 
 interface Props {
   messages: ChatMessage[];
@@ -222,13 +221,6 @@ export function Chat({ messages, isGenerating, isLoadingHistory, status, session
   const [showBookmarks, setShowBookmarks] = useState(false);
   const hasToolCalls = useMemo(() => messages.some(m => m.blocks.some(b => b.type === 'tool_use' || b.type === 'tool_result')), [messages]);
 
-  const handleExport = useCallback(() => {
-    const label = sessionKey?.replace(/^agent:[^:]+:/, '') || 'conversation';
-    const md = messagesToMarkdown(messages, label);
-    const safeLabel = label.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 40);
-    downloadFile(md, `${safeLabel}-${new Date().toISOString().slice(0, 10)}.md`);
-  }, [messages, sessionKey]);
-
   // Message search
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -417,16 +409,7 @@ export function Chat({ messages, isGenerating, isLoadingHistory, status, session
                   <span className="text-[10px] tabular-nums text-pc-text-muted">{sessionBookmarks.length}</span>
                 </button>
               )}
-              {messages.length > 0 && (
-                <button
-                  onClick={handleExport}
-                  aria-label={t('chat.export')}
-                  title={t('chat.export')}
-                  className="flex items-center gap-1.5 rounded-full border border-pc-border-strong bg-pc-elevated/90 backdrop-blur-lg px-3 py-2 text-xs text-pc-text shadow-lg hover:bg-pc-elevated/90 transition-all hover:shadow-cyan-500/10"
-                >
-                  <Download size={14} className="text-pc-accent-light" />
-                </button>
-              )}
+
               {(showScrollBtn || newMessageCount > 0) && (
                 <button
                   onClick={() => { scrollToBottom('smooth'); setNewMessageCount(0); }}
