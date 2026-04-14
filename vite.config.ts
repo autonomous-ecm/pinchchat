@@ -6,6 +6,8 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import pkg from './package.json' with { type: 'json' }
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /** Replace __SW_VERSION__ in sw.js with version+timestamp at build time */
@@ -20,14 +22,14 @@ function swVersionPlugin(): Plugin {
         writeFileSync(swPath, content.replace(/__SW_VERSION__/g, version))
       }
     },
-  }
+  };
 }
 
 export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
-  plugins: [react(), tailwindcss(), swVersionPlugin()],
+  plugins: [react(), tailwindcss(), swVersionPlugin(), cloudflare()],
   build: {
     rollupOptions: {
       output: {
