@@ -33,8 +33,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "preview": "vite preview",
-    "lint:fix": "eslint . --fix"
+    "preview": "npm run build && wrangler dev",
+    "lint:fix": "eslint . --fix",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
@@ -50,6 +51,7 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.32.2",
     "@eslint/js": "^9.39.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
@@ -66,7 +68,8 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.1",
     "vite": "^7.3.1",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "wrangler": "^4.82.2"
   },
   "engines": {
     "node": ">=20.19"
